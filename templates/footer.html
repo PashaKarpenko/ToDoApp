@@ -1,7 +1,7 @@
 <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
           <div class="col-12 col-md">
-            <a class="my-0 mr-md-auto font-weight-normal text-decoration-none text-dark" href="{% url 'registration' %}">
+            <a class="my-0 mr-md-auto font-weight-normal text-decoration-none text-dark" href="{% url 'all_tasks' %}">
               <img class="mb-2" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/To_Do.svg" alt="" width="40" height="40">
               <h3 class="my-0 mr-md-auto font-weight-normal">To Do App</a></h3>
             </a>
@@ -11,7 +11,7 @@
               {% if user.is_authenticated %}
               <li><a class="text-muted" href="{% url 'profile' user.id %}">Account</a></li>
               {% endif %}
-              <li><a class="text-muted" href="#">Github</a></li>
+              <li><a class="text-muted" href="https://github.com/PashaKarpenko/ToDoApp">Github</a></li>
               <li><a class="text-muted" href="https://www.linkedin.com/in/pavlo-karpenko-772211161/">Linkedin</a></li>
               <li><a class="text-muted" href="https://www.facebook.com/profile.php?id=100017153827606">Facebook</a></li>
               <li><a class="text-muted" href="https://www.instagram.com/karpenko_pavel_/">Instagram</a></li>

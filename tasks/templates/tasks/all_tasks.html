@@ -7,14 +7,36 @@
 </head>
 <body>
 {% include 'header.html' %}
-<a class="btn btn-lg btn-primary" href="{% url 'create_task' %}" role="button">Додати задачу</a>
-{% for task in tasks %}
-    <div class="bg-light p-5 rounded">
-        <h1>{{task.title|slice:50}}</h1>
-        <p class="lead">{{task.description|slice:100}}...</p>
-        <a class="btn btn-lg btn-primary" href="#" role="button">Читати повний опис</a>
+{% if user.is_authenticated %}
+    <a class="btn btn-lg btn-primary" href="{% url 'create_task' %}" role="button">Додати задачу</a>
+    {% for task in page_obj %}
+        <div class="bg-light p-5 rounded">
+            <h1>{{task.title|slice:40}}</h1>
+            <p class="lead">{{task.description|slice:70}}...</p>
+            <p class="lead">Дата дедлайну: {{task.deadline_date}}</p>
+            <a class="btn btn-lg btn-primary" href="{% url 'task_detail' task.id %}" role="button">Повний опис задачі</a>
+        </div>
+    {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
     </div>
-{% endfor %}
+{% else %}
+<h3>Щоб скористатися нашим ресурсом Вам потрібно авторизуватися, якщо у Вас ще немає аккаунту для початку потрібно зареєструватись.</h3>
+{% endif %}
 {% include 'footer.html' %}
 </body>
 </html>

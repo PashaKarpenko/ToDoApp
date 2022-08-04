@@ -2,20 +2,26 @@ from django.conf import settings
 from django.db import models
 
 
+STATUS = [('todo', 'todo'), ('in_progress', 'in_progress'), ('blocked', 'blocked'), ('finished', 'finished')]
+PRIORITY = [('low', 'low'), ('medium', 'medium'), ('high', 'high')]
+
 class Tasks(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=350)
-    deadline_date = models.CharField(max_length=10)
-    status = models.CharField(max_length=20, null=True, blank=True)
-    priority = models.CharField(max_length=10, default='')
-    importance = models.CharField(max_length=10, default='')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tasks')
+    title = models.CharField(max_length=100, verbose_name='Назва задачі')
+    description = models.CharField(max_length=350, verbose_name='Опис задачі')
+    deadline_date = models.CharField(max_length=10, verbose_name='Дата дедлайну')
+    status = models.CharField(choices=STATUS, max_length=20, default='todo', verbose_name='Статус')
+    priority = models.CharField(choices=PRIORITY, max_length=10, default='medium', verbose_name='Пріоритет')
+    importance = models.BooleanField(verbose_name='Важливість', default=False)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.title},  {self.description}'
+        return f'{self.description}'
 
     class Meta:
-        verbose_name = 'Task'
-        verbose_name_plural = 'Tasks'
+        verbose_name = 'Задача'
+        verbose_name_plural = 'Задачі'
+        ordering = ['-importance', 'deadline_date']
+
+

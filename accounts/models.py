@@ -22,11 +22,11 @@ class CustomAccountManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    profession = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=30, verbose_name="Ім'я")
+    last_name = models.CharField(max_length=30, verbose_name='Прізвище')
+    profession = models.CharField(max_length=100, verbose_name='Професія')
     is_staff = models.BooleanField(default=False)
-    is_aproove = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     REQUIRED_FIELDS = ['first_name', 'last_name', 'profession']
     USERNAME_FIELD = 'email'
 
@@ -39,4 +39,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def __str__(self):
-        return self.email
+        return f'{self.email}'
+
+    class Meta:
+        verbose_name = 'Користувач'
+        verbose_name_plural = 'Користувачі'
+
+

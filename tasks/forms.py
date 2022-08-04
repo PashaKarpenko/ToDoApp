@@ -8,9 +8,9 @@ class TaskCreateForm(forms.ModelForm):
 
     title = forms.CharField(label="Назва")
     description = forms.CharField(widget=forms.Textarea, label="Повний текст")
-    deadline_date = forms.CharField(label="Дата дедлайну")
+    deadline_date = forms.CharField(widget=forms.SelectDateWidget, label="Дата дедлайну")
     priority = forms.ChoiceField(choices=PRIORITY, label="Пріоритет")
-    importance = forms.ChoiceField(choices=IMPORTANCE, label="Важливість")
+    importance = forms.BooleanField(label="Важливість", help_text='Якщо задача важлива поставте відмітку в чекбоксі.')
 
     class Meta:
         model = Tasks

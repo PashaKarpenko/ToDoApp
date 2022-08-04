@@ -7,13 +7,19 @@
 </head>
 <body>
 {% include 'header.html' %}
+{% if user.is_authenticated %}
 <div>
       <form action="" method="post">
           {% csrf_token %}
           {{ form.as_p }}
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Змінити дані</button>
+        <button class="btn btn-lg btn-primary type="submit">Змінити дані</button>
       </form>
+    <div class="mb-3"></div>
+    <a class="btn btn-lg btn-primary" href="{% url 'all_tasks' %}" role="button">Повернутись до списку задач</a>
 </div>
+{% else %}
+<h3>Щоб скористатися нашим ресурсом Вам потрібно авторизуватися, якщо у Вас ще немає аккаунту для початку потрібно зареєструватись.</h3>
+{% endif %}
 {% include 'footer.html' %}
 </body>
 </html>

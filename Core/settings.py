@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.template.backends import django
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -38,8 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
     'accounts',
     'tasks',
+
 
 ]
 
@@ -87,7 +93,7 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-ACCOUNT_ACTIVATION_DAYS = 7
+ACCOUNT_ACTIVATION_DAYS = 2
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -127,8 +133,17 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'pasharmqa@gmail.com'
-EMAIL_HOST_PASSWORD = 's12p24v28i30'
+EMAIL_HOST_USER = 'pashakarpenko24@gmail.com'
+EMAIL_HOST_PASSWORD = 'hvicpoewnoydhydp'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5
+}
