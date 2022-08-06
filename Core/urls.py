@@ -24,6 +24,6 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('tasks.urls')),
     path('api/tasks/', include(task_router.urls)),
-    path('accounts/edit_user/', include(edit_user_router.urls))
+    path('api/edit_user/', include(edit_user_router.urls))
 
 ]

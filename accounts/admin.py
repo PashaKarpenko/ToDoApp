@@ -1,12 +1,7 @@
-from itertools import count
-
 from django.contrib import admin
-
 from tasks.models import Tasks
 from .models import CustomUser
-
-
-user = CustomUser
+from .forms import UserCreateForm
 
 
 class TaskInline(admin.TabularInline):
@@ -16,10 +11,11 @@ class TaskInline(admin.TabularInline):
     extra = 0
 
     def brief_description(self, obj):
-        task = Tasks.objects.get(description=obj)
-        desk = str(task.description)
-        brief_description = desk[0:50]
-        return f'{brief_description}...'
+        if obj.id != None:
+            task_description = Tasks.objects.filter(id=obj.id).values('description')[0]['description']
+            brief_description = task_description[0:50]
+            print(task_description)
+            return f'{brief_description}...'
 
     brief_description.short_description = "Короткий опис"
 
@@ -28,8 +24,21 @@ class UsersAdmin(admin.ModelAdmin):
     inlines = (TaskInline,)
     list_display = ('first_name', 'last_name', 'profession', 'email', 'tasks_cont',)
     readonly_fields = ('first_name', 'last_name', 'email', 'tasks_cont',)
-    fields = ('first_name', 'last_name', 'email', 'tasks_cont',)
+    fields = ('first_name', 'last_name', 'email', 'tasks_cont')
     search_fields = ['first_name', 'last_name']
+    add_form_template = 'admin/add_user_form.html'
+
+ #   def add_view(self, request, form_url='accounts/forms.py', extra_context=None):
+ #       return self.changeform_view(request, None, form_url, extra_context)
+
+    def add_view(self, request, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        extra_context = {'form': UserCreateForm}
+        return super(UsersAdmin, self).add_view(request, form_url=form_url, extra_context=extra_context)
+
+    def save_form(self, request, form, change):
+        self.form = UserCreateForm
+        return self.form.save(commit=False)
 
     def tasks_cont(self, obj):
         user = CustomUser.objects.get(email=obj)
@@ -37,6 +46,10 @@ class UsersAdmin(admin.ModelAdmin):
         tasks = Tasks.objects.filter(author_id=user_id)
         count_tasks = len(tasks)
         return count_tasks
+
+    def save_model(self, request, obj, form, change):
+        obj = CustomUser
+        obj.save()
 
     tasks_cont.short_description = "Кількість створених задач"
 

@@ -11,4 +11,5 @@ class TaskSerializer(serializers.ModelSerializer):
             'description',
             'status',
             'deadline_date',
+            'finished_task'
         )

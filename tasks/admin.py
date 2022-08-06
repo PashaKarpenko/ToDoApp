@@ -15,25 +15,22 @@ class TasksAdmin(admin.ModelAdmin):
     readonly_fields = ['author', 'brief_description']
 
     def first_name(self, obj):
-        task = Tasks.objects.filter(description=obj)
-
-        user = task
-        print(task)
-        #user = CustomUser.objects.get(email=obj)
-        return task
+        author_id = Tasks.objects.filter(id=obj.id).values('author')[0]['author']
+        first_name = CustomUser.objects.filter(id=author_id).values('first_name')[0]['first_name']
+        return first_name
 
     first_name.short_description = "Ім'я Автора"
 
     def last_name(self, obj):
-        user = CustomUser.objects.get(email=obj)
-        return user.last_name
+        author_id = Tasks.objects.filter(id=obj.id).values('author')[0]['author']
+        last_name = CustomUser.objects.filter(id=author_id).values('last_name')[0]['last_name']
+        return last_name
 
     last_name.short_description = "Прізвище Автора"
 
     def brief_description(self, obj):
-        task = Tasks.objects.get(description=obj)
-        desk = str(task.description)
-        brief_description = desk[0:50]
+        task_description = Tasks.objects.filter(id=obj.id).values('description')[0]['description']
+        brief_description = task_description[0:50]
         return f'{brief_description}...'
 
     brief_description.short_description = "Короткий опис"

@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.contrib.auth import get_user_model, get_user
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -42,19 +44,38 @@ class TaskDetailView(View):
         return render(request, 'tasks/task_detail.html', context=context)
 
 
+
+
 class StatisticsView(View):
     def get(self, request):
         user_id = request.user.id
-        tasks_count = Tasks.objects.filter(author_id=user_id).count()
-        todo_task_count = Tasks.objects.filter(status='todo').count()
-        in_progress_task_count = Tasks.objects.filter(status='in_progress').count()
-        blocked_task_count = Tasks.objects.filter(status='blocked').count()
-        finished_task_count = Tasks.objects.filter(status='finished').count()
+        user_tasks = Tasks.objects.filter(author_id=user_id).all()
+        tasks_count = user_tasks.count()
+        todo_task_count = user_tasks.filter(status='todo').count()
+        in_progress_task_count = user_tasks.filter(status='in_progress').count()
+        blocked_task_count = user_tasks.filter(status='blocked').count()
+        finished_task_count = user_tasks.filter(status='finished').count()
+        average_time_spent = self.average_time_spent()
 
         context = {
             'tasks_count': tasks_count, 'todo_task_count': todo_task_count,
             'in_progress_task_count': in_progress_task_count,
             'blocked_task_count': blocked_task_count,
             'finished_task_count': finished_task_count,
+            'average_time_spent': average_time_spent,
         }
         return render(request, 'tasks/statistics.html', context=context)
+
+    def average_time_spent(self):
+        user_id = self.request.user.id
+        tasks = Tasks.objects.filter(author_id=user_id)
+        count = 0
+        time_spent = datetime.strptime('0001-01-01 00:00:00', "%Y-%m-%d %H:%M:%S")
+        for task in tasks:
+            if task.in_progress_task != None and task.finished_task != None:
+                time_spent += (datetime.strptime(str(task.finished_task), "%Y-%m-%d %H:%M:%S") - datetime.strptime(
+                    str(task.in_progress_task), "%Y-%m-%d %H:%M:%S"))
+                count += 1
+        average_time_spent_in_seconds = int((time_spent - datetime.strptime('0001-01-01 00:00:00', "%Y-%m-%d %H:%M:%S")).total_seconds() / count)
+        average_time_spent = str(timedelta(seconds=average_time_spent_in_seconds))
+        return average_time_spent

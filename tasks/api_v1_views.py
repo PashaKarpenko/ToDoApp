@@ -1,17 +1,10 @@
+import datetime
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from datetime import date
-from rest_framework.views import APIView
-
-from accounts.models import CustomUser
 from tasks.models import Tasks
 from tasks.serializers import TaskSerializer
-
-from rest_framework.status import HTTP_201_CREATED
-from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from django.contrib.auth import get_user_model
@@ -56,6 +49,7 @@ class TaskViewSet(ModelViewSet):
         task = self.get_object()
         if task.status == 'todo':
             task.status = 'in_progress'
+            task.in_progress_task = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             task.save()
         serializer = self.get_serializer(task)
         return Response(serializer.data)
@@ -83,6 +77,7 @@ class TaskViewSet(ModelViewSet):
         task = self.get_object()
         if task.status == 'in_progress':
             task.status = 'finished'
+            task.finished_task = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             task.save()
         serializer = self.get_serializer(task)
         return Response(serializer.data)
