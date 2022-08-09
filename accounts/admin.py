@@ -1,7 +1,13 @@
 from django.contrib import admin
+from django.contrib.admin.options import BaseModelAdmin
+from django.contrib.admindocs.views import BaseAdminDocsView
+from django.contrib.auth import authenticate
+
 from tasks.models import Tasks
 from .models import CustomUser
 from .forms import UserCreateForm
+from .utils import send_email_for_verify
+from .views import RegisterView
 
 
 class TaskInline(admin.TabularInline):
@@ -22,23 +28,20 @@ class TaskInline(admin.TabularInline):
 
 class UsersAdmin(admin.ModelAdmin):
     inlines = (TaskInline,)
-    list_display = ('first_name', 'last_name', 'profession', 'email', 'tasks_cont',)
-    readonly_fields = ('first_name', 'last_name', 'email', 'tasks_cont',)
-    fields = ('first_name', 'last_name', 'email', 'tasks_cont')
+    list_display = ('first_name', 'last_name', 'profession', 'email', 'tasks_cont')
+    readonly_fields = ('tasks_cont',)
+    fields = ('first_name', 'last_name', 'email', 'profession', 'tasks_cont')
     search_fields = ['first_name', 'last_name']
     add_form_template = 'admin/add_user_form.html'
 
- #   def add_view(self, request, form_url='accounts/forms.py', extra_context=None):
- #       return self.changeform_view(request, None, form_url, extra_context)
+    #   def add_view(self, request, form_url='accounts/forms.py', extra_context=None):
+    #       return self.changeform_view(request, None, form_url, extra_context)
 
     def add_view(self, request, form_url="", extra_context=None):
-        extra_context = extra_context or {}
-        extra_context = {'form': UserCreateForm}
-        return super(UsersAdmin, self).add_view(request, form_url=form_url, extra_context=extra_context)
+        form = UserCreateForm
 
-    def save_form(self, request, form, change):
-        self.form = UserCreateForm
-        return self.form.save(commit=False)
+        extra_context = {'form': form}
+        return super(UsersAdmin, self).add_view(request, form_url=form_url, extra_context=extra_context)
 
     def tasks_cont(self, obj):
         user = CustomUser.objects.get(email=obj)
@@ -47,10 +50,10 @@ class UsersAdmin(admin.ModelAdmin):
         count_tasks = len(tasks)
         return count_tasks
 
-    def save_model(self, request, obj, form, change):
-        obj = CustomUser
-        obj.save()
-
     tasks_cont.short_description = "Кількість створених задач"
 
+
 admin.site.register(CustomUser, UsersAdmin)
+
+
+

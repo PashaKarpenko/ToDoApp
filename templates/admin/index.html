@@ -1,0 +1,38 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}">{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }}dashboard{% endblock %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <h1><b>Дешборд</b></h1>
+    <h3 class="lead">Загальна кількість користувачів: {{ user_count }}</h3>
+
+    <h3 class="lead">Всього задач: {{ user_count }}</h3>
+    <h3 class="lead">todo: {{todo_task_count}}</h3>
+    <h3 class="lead">in_progress: {{in_progress_task_count}}</h3>
+    <h3 class="lead">blocked: {{blocked_task_count}}</h3>
+    <h3 class="lead">finished: {{finished_task_count}}</h3>
+    <h3 class="lead">Середня тривалість виконання задачі: {{average_time_spent}}</h3>
+</div>
+
+{% endblock %}
+
+
+
+

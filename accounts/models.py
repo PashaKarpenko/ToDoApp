@@ -44,5 +44,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'Користувач'
         verbose_name_plural = 'Користувачі'
-
-

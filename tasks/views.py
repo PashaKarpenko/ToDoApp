@@ -13,7 +13,7 @@ from django.urls import reverse
 User = get_user_model()
 
 
-class TasksView(View):
+class TasksListView(View):
     def get(self, request):
         tasks = Tasks.objects.filter(author_id=request.user.id).all()
         paginator = Paginator(tasks, 3)
