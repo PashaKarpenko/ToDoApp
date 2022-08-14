@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
+from django.utils import timezone
 
 
 class CustomAccountManager(BaseUserManager):
@@ -27,6 +28,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     profession = models.CharField(max_length=100, verbose_name='Професія')
     is_staff = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
+    create_at = models.DateTimeField(default=timezone.now)
     REQUIRED_FIELDS = ['first_name', 'last_name', 'profession']
     USERNAME_FIELD = 'email'
 

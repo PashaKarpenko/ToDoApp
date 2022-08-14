@@ -5,6 +5,7 @@ from django.db import models
 STATUS = [('todo', 'todo'), ('in_progress', 'in_progress'), ('blocked', 'blocked'), ('finished', 'finished')]
 PRIORITY = [('low', 'low'), ('medium', 'medium'), ('high', 'high')]
 
+
 class Tasks(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tasks')
     title = models.CharField(max_length=100, verbose_name='Назва задачі')

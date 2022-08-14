@@ -7,10 +7,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
-from django.contrib.auth import get_user_model
-
-
-User = get_user_model()
 
 
 class TaskViewSet(ModelViewSet):

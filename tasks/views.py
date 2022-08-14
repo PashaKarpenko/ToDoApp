@@ -1,11 +1,8 @@
 from datetime import datetime, timedelta
-
-from django.contrib.auth import get_user_model, get_user
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.core.paginator import Paginator
-from django.views.generic import DetailView
-
 from .models import Tasks
 from .forms import TaskCreateForm
 from django.urls import reverse
@@ -42,8 +39,6 @@ class TaskDetailView(View):
         task = get_object_or_404(Tasks, id=pk)
         context = {'task': task}
         return render(request, 'tasks/task_detail.html', context=context)
-
-
 
 
 class StatisticsView(View):

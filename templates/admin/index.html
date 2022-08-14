@@ -19,16 +19,17 @@
 {% endblock %}
 
 {% block sidebar %}
+{% load custom_tags %}
 <div id="content-related">
     <h1><b>Дешборд</b></h1>
-    <h3 class="lead">Загальна кількість користувачів: {{ user_count }}</h3>
-
-    <h3 class="lead">Всього задач: {{ user_count }}</h3>
-    <h3 class="lead">todo: {{todo_task_count}}</h3>
-    <h3 class="lead">in_progress: {{in_progress_task_count}}</h3>
-    <h3 class="lead">blocked: {{blocked_task_count}}</h3>
-    <h3 class="lead">finished: {{finished_task_count}}</h3>
-    <h3 class="lead">Середня тривалість виконання задачі: {{average_time_spent}}</h3>
+    <h3 class="lead">Загальна кількість користувачів: {% users_count %}</h3>
+    <h3 class="lead">Зареєстровано користувачів за останній тиждень: {% registered_last_week %}</h3>
+    <h3 class="lead">Всього задач: {% tasks_count %}</h3>
+    <h3 class="lead">Задачі по статусам:</h3>
+    <h3 class="lead">todo: {% todo_status %}</h3>
+    <h3 class="lead">in_progress: {% in_progress_status %}</h3>
+    <h3 class="lead">blocked: {% blocked_status %}</h3>
+    <h3 class="lead">finished: {% finished_status %}</h3>
 </div>
 
 {% endblock %}

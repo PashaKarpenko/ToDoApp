@@ -8,3 +8,20 @@ services:
     ports:
       - 8000:8000
 
+  redis:
+    image: redis/redis-stack
+    restart: always
+    container_name: redis
+
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A core worker -l info
+    depends_on:
+      - redis
+      - todoapp
+    container_name: celery
+  
+  
+ 

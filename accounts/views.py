@@ -37,7 +37,6 @@ class RegisterView(View):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=password)
-            print(user)
             send_email_for_verify(request, user)
             return redirect('confirm_email')
         context = {

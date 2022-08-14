@@ -1,13 +1,7 @@
 from django.contrib import admin
-from django.contrib.admin.options import BaseModelAdmin
-from django.contrib.admindocs.views import BaseAdminDocsView
-from django.contrib.auth import authenticate
-
 from tasks.models import Tasks
 from .models import CustomUser
 from .forms import UserCreateForm
-from .utils import send_email_for_verify
-from .views import RegisterView
 
 
 class TaskInline(admin.TabularInline):
@@ -34,12 +28,8 @@ class UsersAdmin(admin.ModelAdmin):
     search_fields = ['first_name', 'last_name']
     add_form_template = 'admin/add_user_form.html'
 
-    #   def add_view(self, request, form_url='accounts/forms.py', extra_context=None):
-    #       return self.changeform_view(request, None, form_url, extra_context)
-
     def add_view(self, request, form_url="", extra_context=None):
         form = UserCreateForm
-
         extra_context = {'form': form}
         return super(UsersAdmin, self).add_view(request, form_url=form_url, extra_context=extra_context)
 

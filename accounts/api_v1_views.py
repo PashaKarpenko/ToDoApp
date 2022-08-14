@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 
 
-
 class EditUserViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = EditUserSerializer
