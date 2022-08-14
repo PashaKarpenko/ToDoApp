@@ -138,13 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 EMAIL_HOST = 'smtp.gmail.com'
-<<<<<<< HEAD:core/settings.py
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-=======
-EMAIL_HOST_USER = 'pashakarpenko24@gmail.com'
-EMAIL_HOST_PASSWORD = ''
->>>>>>> ToDoApp/master:Core/settings.py
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
